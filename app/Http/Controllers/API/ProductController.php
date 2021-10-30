@@ -21,6 +21,11 @@ class ProductController extends BaseController
     
         return $this->sendResponse(ProductResource::collection($products), 'Products retrieved successfully.');
     }
+
+    public function test(){
+        return 'Test API Success';
+    }
+
     /**
      * Store a newly created resource in storage.
      *
