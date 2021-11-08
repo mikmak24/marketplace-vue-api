@@ -19,10 +19,16 @@ Route::post('login', 'API\RegisterController@login');
 Route::middleware('auth:api')->group( function () {
     // Route::resource('products', 'API\ProductController');
     Route::post('test', 'API\ProductController@test');
+    Route::post('wm-uploadsetter', 'API\Walmart\WalmartSetterController@uploadproducts');
+
+    //Walmart Dashboard
+    Route::get('wmitems', 'API\Walmart\DashboardController@getItems');
+    Route::get('wmfullfilled', 'API\Walmart\DashboardController@orderFullfilled');
+    Route::post('wmgetorder', 'API\Walmart\DashboardController@getSpecificOrder');
+
+
 
 });
 
-// Route::middleware(['cors'])->group(function () {
-//     Route::post('test', 'API\ProductController@test');
-// });
+
 

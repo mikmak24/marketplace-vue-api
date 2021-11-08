@@ -91,6 +91,22 @@ return [
             'prefix_indexes' => true,
         ],
 
+        //MongoDB
+        'mongodb-walmart' => [
+            'driver' => 'mongodb',
+            'host' => env('MONGO_DB_HOST', '192.168.2.233'),
+            'port' => env('MONGO_DB_PORT', 27017),
+            'database' => env('MONGO_DB_DATABASE', 'walmart'),
+            'username' => env('MONGO_DB_USERNAME', null),
+            'password' => env('MONGO_DB_PASSWORD', null),
+            'options' => [
+                // here you can pass more settings to the Mongo Driver Manager
+                // see https://www.php.net/manual/en/mongodb-driver-manager.construct.php under "Uri Options" for a list of complete parameters that you can use
+        
+                'database' => env('MONGO_DB_AUTHENTICATION_DATABASE', 'admin'), // required with Mongo 3+
+            ],
+        ],
+
     ],
 
     /*
