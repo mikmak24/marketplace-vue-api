@@ -10,25 +10,32 @@ use App\Http\Resources\Product as ProductResource;
 use App\Model\Walmart\Item;
 use App\Model\Walmart\SdOrders;
 use App\Model\Walmart\SdShipment;
+use Illuminate\Support\Carbon;
+
 
 class DashboardController extends BaseController
 {
-    public function getItems()
+    public function latestOrders()
     {
-        $results = SdOrders::limit(10)    
-        ->orderBy('created_at', 'DESC')
-        ->get();
+        $results = SdOrders::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+        ->orderBy('created_at', 'desc')->get();
         return $results;
     }
 
     public function orderFullfilled()
     {
-        $results = SdShipment::limit(20)  
+        $results = SdShipment::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
         ->where('tried_shipped', true)  
         ->orderBy('created_at', 'DESC')
         ->get();
         return $results;
+    }
 
+    public function orderDueToday(){
+        $results = SdShipment::where(DATE('ship_date'), '20210413')  
+        ->orderBy('created_at', 'DESC')
+        ->get();
+        return $results;
     }
 
     public function getSpecificOrder(Request $request)
@@ -38,5 +45,46 @@ class DashboardController extends BaseController
         return $results;
          
     }
+
+    public function orderPassdue()
+    {
+        $results = SdOrders::limit(20)    
+        ->where('has_shipment', null)
+        ->orderBy('created_at', 'DESC')
+        ->get();
+        return $results;
+    }
+
+    public function getNewOrdersCount()
+    {
+        $results = SdOrders::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+        ->orderBy('created_at', 'desc')->count();
+        return  $results;
+    }
+
+    public function getCompleteOrdersCount()
+    {
+        $results = SdShipment::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+        ->where('tried_shipped', true)->count();
+        return  $results;
+    }
+
+    public function getPassDueOrdersCount()
+    {
+        $results = SdOrders::where('has_shipment', null)
+        ->orderBy('created_at', 'DESC')
+        ->count();
+        return $results;
+    }
+
+    //SpecificOrder
+    public function getSpecificNewOrder(Request $request)
+    {
+        $results = SdOrders::where('eclipse_id', $request['eclipse_id'])  
+        ->first();
+        return $results;
+    }
+
+    
 
 }
