@@ -17,8 +17,8 @@ Route::post('register', 'API\RegisterController@register');
 Route::post('login', 'API\RegisterController@login');
  
 Route::middleware('auth:api')->group( function () {
-    // Route::resource('products', 'API\ProductController');
-    Route::post('test', 'API\ProductController@test');
+    
+    //****StartOfWalmart****
 
     //Walmart Setter
     Route::post('wm-uploadsetter', 'API\Walmart\WalmartSetterController@uploadproducts');
@@ -28,18 +28,35 @@ Route::middleware('auth:api')->group( function () {
     Route::get('wmfullfilled', 'API\Walmart\DashboardController@orderFullfilled');
     Route::get('wmpassdue', 'API\Walmart\DashboardController@orderPassdue');
     Route::get('wmdueorders', 'API\Walmart\DashboardController@orderDuetoday');
-
-
-
     Route::get('countnewOrders', 'API\Walmart\DashboardController@getNewOrdersCount');
     Route::get('countcompleteOrders', 'API\Walmart\DashboardController@getCompleteOrdersCount');
     Route::get('countdueOrders', 'API\Walmart\DashboardController@getPassDueOrdersCount');
 
-
     Route::post('wmgetorder', 'API\Walmart\DashboardController@getSpecificOrder');
-    
+
     //GetSpecific
     Route::post('wmgetNewOrder', 'API\Walmart\DashboardController@getSpecificNewOrder');
+
+    //ItemCollection
+    Route::get('wmitemscollection', 'API\Walmart\ItemsController@getProducts');
+    Route::post('wmgetproduct', 'API\Walmart\ItemsController@getSpecificProduct');
+    Route::post('wmsearchproduct', 'API\Walmart\ItemsController@searchProduct');
+    
+    //OrdersController
+    Route::post('wmsearchorder', 'API\Walmart\OrdersController@searchOrder');
+    Route::post('wmsearcheclipseid', 'API\Walmart\OrdersController@searchEclipseID');
+    Route::post('wmgetwalmartdetails', 'API\Walmart\OrdersController@getWalmartDetails');
+
+
+
+
+
+    Route::post('wmupdatecontent', 'API\Walmart\ItemsController@updateProductContent');
+
+
+
+
+    //****EndOfWalmart****
 
 
 
