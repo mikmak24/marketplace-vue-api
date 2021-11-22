@@ -16,6 +16,11 @@ class Product extends Eloquent
         'prod_lifecycle_status'
     ];
 
+    public function image()
+    {
+        return $this->hasOne('App\Model\Walmart\Image');
+    }
+
      /**
      * The attributes that should be hidden for arrays.
      *

@@ -14,6 +14,11 @@ class Image extends Eloquent
         'sku', 'image_url', 'seller'
     ];
 
+    public function product()
+    {
+        return $this->belongsTo('App\Model\Walmart\Product');
+    }
+
      /**
      * The attributes that should be hidden for arrays.
      *

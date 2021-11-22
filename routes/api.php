@@ -41,6 +41,8 @@ Route::middleware('auth:api')->group( function () {
     Route::get('wmitemscollection', 'API\Walmart\ItemsController@getProducts');
     Route::post('wmgetproduct', 'API\Walmart\ItemsController@getSpecificProduct');
     Route::post('wmsearchproduct', 'API\Walmart\ItemsController@searchProduct');
+    Route::post('wmsetpromotion', 'API\Walmart\ItemsController@setPromotion');
+
     
     //OrdersController
     Route::post('wmsearchorder', 'API\Walmart\OrdersController@searchOrder');

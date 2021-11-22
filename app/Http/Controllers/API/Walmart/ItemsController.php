@@ -41,6 +41,9 @@ class ItemsController extends BaseController
         return $results;
     }
 
+    public function setPromotion(Request $request){
+        return $request;
+    }
 
     public function updateProductContent(Request $request)
     {
