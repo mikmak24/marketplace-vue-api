@@ -11,6 +11,10 @@ use App\Model\Walmart\Item;
 use App\Model\Walmart\SdOrders;
 use App\Model\Walmart\SdShipment;
 use Illuminate\Support\Carbon;
+use App\Model\Walmart\SDCancelOrders;
+use App\Model\Walmart\SDCancelItems;
+use File;
+
 
 
 class DashboardController extends BaseController
@@ -55,6 +59,13 @@ class DashboardController extends BaseController
         return $results;
     }
 
+    public function cancelOrders()
+    {
+        $results = SDCancelOrders::orderBy('order_date', 'desc')->get();
+        return $results;
+    }
+
+
     public function getNewOrdersCount()
     {
         $results = SdOrders::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
@@ -73,6 +84,13 @@ class DashboardController extends BaseController
     {
         $results = SdOrders::where('has_shipment', null)
         ->orderBy('created_at', 'DESC')
+        ->count();
+        return $results;
+    }
+
+    public function getCancelOrdersCount()
+    {
+        $results = SDCancelOrders::orderBy('created_at', 'DESC')
         ->count();
         return $results;
     }

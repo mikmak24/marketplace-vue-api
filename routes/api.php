@@ -31,6 +31,9 @@ Route::middleware('auth:api')->group( function () {
     Route::get('countnewOrders', 'API\Walmart\DashboardController@getNewOrdersCount');
     Route::get('countcompleteOrders', 'API\Walmart\DashboardController@getCompleteOrdersCount');
     Route::get('countdueOrders', 'API\Walmart\DashboardController@getPassDueOrdersCount');
+    Route::get('countcancelOrders', 'API\Walmart\DashboardController@getCancelOrdersCount');
+
+    Route::get('wmcancelorders', 'API\Walmart\DashboardController@cancelOrders');
 
     Route::post('wmgetorder', 'API\Walmart\DashboardController@getSpecificOrder');
 
