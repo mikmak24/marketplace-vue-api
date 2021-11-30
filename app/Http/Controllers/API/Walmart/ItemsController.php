@@ -11,6 +11,8 @@ use App\Model\Walmart\Image;
 use App\Model\Walmart\Product;
 use Illuminate\Support\Carbon;
 use WMToken;
+use GuzzleHttp\Client as GuzzleClient;
+
 
 class ItemsController extends BaseController
 {
@@ -42,7 +44,82 @@ class ItemsController extends BaseController
     }
 
     public function setPromotion(Request $request){
-        return $request;
+        $body = $this->getPromotionBody($request);
+        $client_id = "5f8344e0-1486-441e-9287-03ebbeb74a3e" ;
+        $client_secret = "AKA0p4Z-PCL__IebI9_9Wl8bGsh5E2lycsqfIUkHnJnyIwSc84F94r-Q7xSec8TXI5KnwBbv_xRUPeXfTVcPS60";
+        $uniqid = uniqid();
+        $authorization_key = base64_encode($client_id.":".$client_secret);
+        $token = $this->token->getToken();
+        $accessToken = $token['accessToken'];
+
+        $url = 'https://marketplace.walmartapis.com/v3/price';
+
+        $header = array (
+            "WM_SVC.NAME: Walmart Marketplace",
+            "WM_QOS.CORRELATION_ID: $uniqid",
+            "Authorization: Basic $authorization_key",
+            "WM_SEC.ACCESS_TOKEN: $accessToken",
+            "Content-Type: application/json"
+        );
+       
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_decode($body));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+
+        $response = curl_exec($ch);
+        curl_close($ch);
+        return $response;
+    }
+
+    public function getPromotionBody($request)
+    {
+        $sku                        = $request['sku'];
+        $currentpricetype           = $request['data']['currentpricetype'];
+        $comparisonpricetype        = $request['data']['comparisonpricetype'];
+        $oldcurrency                = $request['data']['oldcurrency'];
+        $oldprice                   = $request['data']['oldprice'];
+        $newcurrency                = $request['data']['newcurrency'];
+        $newprice                   = $request['data']['newprice'];
+        $displaycode                = $request['data']['displaycode'];
+        $procesmode                 = $request['data']['procesmode'];
+        $effectivedate              = $request['data']['effectivedate'];
+        $expirationdate             = $request['data']['expirationdate'];
+
+       return json_encode( '
+       {
+           "sku": "'.$sku.'",
+           "replaceAll": "false",
+           "pricing": [
+               {
+                   "currentPriceType": "'.$currentpricetype.'",
+                   "comparisonPriceType":  "'.$comparisonpricetype.'",
+                   "currentPrice": {
+                       "currency":  "'.$newcurrency.'",
+                       "amount":  "'.$newprice.'"
+                   },
+                   "comparisonPrice": {
+                       "currency": "'.$oldcurrency.'",
+                       "amount": "'.$oldprice.'"
+                   },
+                   "priceDisplayCodes": "'.$displaycode.'",
+                   "effectiveDate": "'.$effectivedate.'",
+                   "expirationDate": "'.$expirationdate.'",
+                   "processMode": "UPSERT"
+               }
+           ]
+       }
+           
+       ')
+       ;
+
+        return $body;
+
+       
+
     }
 
     public function updateProductContent(Request $request)

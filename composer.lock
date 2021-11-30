@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cdaceffa9b6694dc87776859c03ab0c0",
+    "content-hash": "7cc83ff13283bb9c9df852dece81a016",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2845,6 +2845,7 @@
                 "mail",
                 "mailer"
             ],
+            "abandoned": "symfony/mailer",
             "time": "2021-10-18T15:26:12+00:00"
         },
         {

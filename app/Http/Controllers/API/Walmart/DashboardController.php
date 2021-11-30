@@ -22,7 +22,7 @@ class DashboardController extends BaseController
     public function latestOrders()
     {
         $results = SdOrders::whereBetween('created_at', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
-        ->orderBy('created_at', 'desc')->get();
+        ->orderBy('order_date', 'desc')->get();
         return $results;
     }
 
